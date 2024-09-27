@@ -26,7 +26,7 @@
    cmake -D CMAKE_BUILD_TYPE=DEBUG \
          -D CMAKE_INSTALL_PREFIX=~/opencv4.5-custom \
          -D OPENCV_EXTRA_MODULES_PATH=~/opencv4.5-tmp/opencv_contrib/modules \
-         -D OPENCV_GENERATE_PKGCONFIG=ON \
+         -D OPENCV_GENERATE_PKGCONFIG=ON -DOPENCV_GENERATE_PKGCONFIG=ON \
          -D BUILD_EXAMPLES=ON ..
    ```
 1. Make the project:
@@ -40,4 +40,33 @@
 1. Ensure that it is updated in the library storage:
    ```
    sudo ldconfig
+   ```
+
+   # Configure C++ project to work with opencv
+
+1. Open your editor of choice (VSCode in my case)
+1. Create a folder "~/projects/HelloOpenCV"
+1. Paste the `main.cpp` code to the `main.cpp`
+1. Firstly, let's try to compile our application with g++ as usual:
+   ```
+   g++ -Wall -o main main.cpp
+   ```
+   We see that it cannot find our library headers
+1. For that we need to provide path to the headers and linker flags. The best way to find them
+   all in one place is to use the utility module pkg-config. Remember we provided an additional
+   argument to our cmake generation? So, let's execute the following:
+   ```
+   export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/home/parallels/opencv4.5-custom/lib/pkgconfig
+   pkg-config --cflags --libs opencv4
+   ```
+1. Add all flags to compilation command:
+   ```
+   g++ -Wall -o main main.cpp $(pkg-config --cflags --libs opencv4)
+   ```
+   or a more explicit version for our particular sample:
+   ```
+   g++ -Wall -o main main.cpp \
+      -I/home/parallels/opencv4.5-custom/include/opencv4 \
+      -L/home/parallels/opencv4.5-custom/lib \
+      -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs -lopencv_core
    ```
