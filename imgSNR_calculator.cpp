@@ -1,5 +1,6 @@
 #include "snr_header.hpp"
-// you'll find the defintion of the functions in the header i built
+/* you'll find the defintion of the functions 
+in the header i built */
 double calculateSNR(const cv::Mat& originalImage, const cv::Mat& noisyImage);
 cv::Mat addNoise(const cv::Mat originalImage);
 
