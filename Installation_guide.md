@@ -26,7 +26,8 @@
    cmake -D CMAKE_BUILD_TYPE=DEBUG \
          -D CMAKE_INSTALL_PREFIX=~/opencv4.5-custom \
          -D OPENCV_EXTRA_MODULES_PATH=~/opencv4.5-tmp/opencv_contrib/modules \
-         -D OPENCV_GENERATE_PKGCONFIG=ON -DOPENCV_GENERATE_PKGCONFIG=ON \
+         -D OPENCV_GENERATE_PKGCONFIG=ON -D WITH_QT=OFF \
+         -D WITH_GTK=ON  \
          -D BUILD_EXAMPLES=ON ..
    ```
 1. Make the project:
