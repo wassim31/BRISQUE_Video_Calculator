@@ -1,0 +1,3 @@
+/home/wass/image_processing/brisque/CMakeFiles/brisquequality.dir
+/home/wass/image_processing/brisque/CMakeFiles/edit_cache.dir
+/home/wass/image_processing/brisque/CMakeFiles/rebuild_cache.dir
