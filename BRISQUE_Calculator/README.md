@@ -18,7 +18,9 @@ Pour l'utilisation avec une vidéo déja prete :
 
 ./main <input.avi\.mp4\.MPEG> frame_delay_in_ms
 
-Pour l'utilisation avec votre camera de pc : 
+Pour l'utilisation avec votre camera de pc ajouter la valeur 0 en input_file: 
+
+./main 0 frame_delay_in_ms
 
 
 2. Application de la métrique BRISQUE :
@@ -44,3 +46,5 @@ l’évolution du score BRISQUE au fil du temps, avec des commentaires sur le
 comportement observé et les variations de qualité.
 • Explication technique : Une bref description du processus de mise en œuvre
 et des défis rencontrés durant le développement.
+
+to plot results in c++ , i tried to port matplotlib in c++ using the library : https://github.com/lava/matplotlib-cpp/ but it creates many linking problems , so i'll extract the results as a txt or csv and plot them easily with a python script

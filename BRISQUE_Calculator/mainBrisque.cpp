@@ -8,10 +8,11 @@
 #include <opencv2/highgui/highgui.hpp>  
 #include "brisque/brisque.h"
 #include "brisque/libsvm/svm.h"
+#include "useCameraInput.h"
 
 using namespace std;
 using namespace cv;
-void getBrisque(cv::Mat frame,int frameNum, svm_model *model);
+float getBrisque(cv::Mat frame,int frameNum, svm_model *model);
 
 int main(int argc, char *argv[])
 {
@@ -19,12 +20,16 @@ int main(int argc, char *argv[])
         cout << "Not enough parameters" << endl;
         return -1;
     }
-    stringstream conv;
-
-    const string videoSource = argv[1];
-    int delay;
-    conv << argv[2] << endl;       // put in the strings
-    conv >> delay;        // take out the numbers
+    string videoSource;
+    if(std::strcmp(argv[1],"0") != 0) {
+        videoSource = argv[1];
+    } else {
+        videoSource = useCameraInput();
+    }
+    int delay = std::stoi(argv[2]);;
+    
+    /*conv << argv[2] << endl;      
+    conv >> delay;    */
 
     char c; // to stop 
     int frameNum = -1;          // Frame counter
@@ -53,6 +58,10 @@ int main(int argc, char *argv[])
     double psnrV;
     cv::Scalar mssimV;
     struct svm_model *model = (struct svm_model *) svm_load_model("allmodel");
+    float brisqueValue;
+    double countFrame = captRefrnc.get(CAP_PROP_FRAME_COUNT) / 2;
+    cout << countFrame << "\n";
+    
     for(;;) //Show the image captured in the window and repeat
     {
         captRefrnc >> frame;
@@ -64,7 +73,12 @@ int main(int argc, char *argv[])
         }
 
         ++frameNum;
-        getBrisque(frame,frameNum, model);
+        brisqueValue = getBrisque(frame,frameNum, model);
+        const string text = "Brisque at Frame " + std::to_string(frameNum) + ": " + std::to_string(brisqueValue);
+        cv::putText(frame, 
+        text,
+        cv::Point(10, frame.rows / 4),
+        cv::FONT_HERSHEY_DUPLEX,1.0,CV_RGB(118, 185, 0),2);
 
         cout << endl;
 
@@ -73,13 +87,14 @@ int main(int argc, char *argv[])
         c = (char) waitKey(delay);
         if (c == 27) break;
     }
-
+    
     return 0;
 }
 
-void getBrisque(cv::Mat frame,int frameNum, svm_model *model)
+float getBrisque(cv::Mat frame,int frameNum, svm_model *model)
 {
   float score = computescore(frame,model,frameNum);
   std::cout << "Frame " << frameNum << " score " << score << std::endl;
+  return score;
 }
 
