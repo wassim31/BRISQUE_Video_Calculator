@@ -12,7 +12,7 @@ LIBSVM
 Python3.8
 cmake3.30
 make
-gcc
+gcc.
 ```
 ### Compile the project : 
 ```
