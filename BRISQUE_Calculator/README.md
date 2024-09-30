@@ -6,7 +6,7 @@ This a technical test provided by Mr Abderrezzaq Sendjasni for an Internship opp
 g++ -o main mainBrisque.cpp brisque/libsvm/svm.o brisque/computescore.o brisque/brisque.o $(pkg-config --cflags --libs opencv4)
 
 
-## #Développement d’un système d’acquisition de flux visuel avec contrôle de qualité en temps réel par la métrique BRISQUE.
+## Développement d’un système d’acquisition de flux visuel avec contrôle de qualité en temps réel par la métrique BRISQUE.
 
 Description :
 Ce projet consiste à développer un système capable de capturer un flux vidéo en temps réel et
