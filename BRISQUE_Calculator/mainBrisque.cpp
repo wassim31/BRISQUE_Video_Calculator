@@ -9,6 +9,8 @@
 #include "brisque/brisque.h"
 #include "brisque/libsvm/svm.h"
 #include "useCameraInput.h"
+#include <fstream> // to create the csv file i'll plot later with Python:metaplot()
+
 
 using namespace std;
 using namespace cv;
@@ -59,21 +61,36 @@ int main(int argc, char *argv[])
     cv::Scalar mssimV;
     struct svm_model *model = (struct svm_model *) svm_load_model("allmodel");
     float brisqueValue;
+    // calculate how many frames in the video
+
     double countFrame = captRefrnc.get(CAP_PROP_FRAME_COUNT) / 2;
-    cout << countFrame << "\n";
-    
+
+
+    std::ofstream outf{ "result.csv" };
+    if (!outf) {
+        std::cerr << "result.csv could not be opened for writing!\n";
+        return 1;
+    }
+    outf << "frame,brisque";
+    outf << "\n";
+
     for(;;) //Show the image captured in the window and repeat
     {
         captRefrnc >> frame;
 
-        if (frame.empty())
-        {
-            cout << " < < <  Game over!  > > > ";
+        if (frame.empty()) {
+            cout << " < < <  Video ended!  > > > ";
             break;
         }
 
         ++frameNum;
         brisqueValue = getBrisque(frame,frameNum, model);
+        if(frameNum >= 0) {
+            String line = std::to_string(frameNum) + "," + std::to_string(brisqueValue);
+
+            outf << line;
+            outf << "\n";
+        }
         const string text = "Brisque at Frame " + std::to_string(frameNum) + ": " + std::to_string(brisqueValue);
         cv::putText(frame, 
         text,
@@ -87,7 +104,8 @@ int main(int argc, char *argv[])
         c = (char) waitKey(delay);
         if (c == 27) break;
     }
-    
+    // remove the 0,nan value
+     
     return 0;
 }
 
