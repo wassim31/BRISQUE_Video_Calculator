@@ -16,6 +16,7 @@ gcc.
 ```
 ### Compile the project : 
 ```
+cmake brisque/.
 g++ -o main mainBrisque.cpp brisque/libsvm/svm.o brisque/computescore.o brisque/brisque.o $(pkg-config --cflags --libs opencv4)
 ```
 
